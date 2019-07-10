@@ -7,15 +7,18 @@ library(dplyr)
 library(sf)
 library(tmap)
 
-source("compactness.R")
+sourceFile = "C:/Users/mstuhlma/Dropbox (ASU)/Dissertation/Urban/Code/compactr/compactness.R"
+
+source(sourceFile)
 
 urlPA = "http://aws.redistricting.state.pa.us/Redistricting/Resources/GISData/Districts/Congressional/2011/SHAPE/PA-Congressional-Districts-2011.zip"
+#testPA = "C:/Users/mstuhlma/Dropbox (ASU)/Dissertation/Urban/Code/compactr/demo/PA-Congressional-Districts-2011.zip"
 
 z = basename(urlPA)
 layer = strsplit(z, "[.]")[[1]][1]
 download.file(urlPA, z)
 unzip(z, junkpaths = TRUE, exdir = "temp")
-sfCdPa = read_sf("temp")
+sfCdPa = st_read("temp")
 unlink(z)
 unlink("temp", recursive = TRUE)
 
@@ -31,6 +34,8 @@ crsPaDep = "+proj=aea +lat_1=40 +lat_2=42 +lat_0=39 +lon_0=-78 +x_0=0 +y_0=0 +el
 # However, Reock calculated on lat-long coordinates is wildly incorrect, 
 # because the minimum bounding circle algorithm treats lat-long coordinates
 # as planar.
+
+# seems to be working up to this code block
 dfReockError = sfCdPa %>%
   select(District_N) %>%
   mutate(
