@@ -35,7 +35,6 @@ crsPaDep = "+proj=aea +lat_1=40 +lat_2=42 +lat_0=39 +lon_0=-78 +x_0=0 +y_0=0 +el
 # because the minimum bounding circle algorithm treats lat-long coordinates
 # as planar.
 
-# seems to be working up to this code block
 dfReockError = sfCdPa %>%
   select(District_N) %>%
   mutate(
@@ -51,7 +50,9 @@ dfReockError = sfCdPa %>%
 # A view of the minimum bounding circles:
 #   * dark gray is constructed in lat-long coordinates
 #   * light gray is constructed in equal area coordinates
-png("demo/reock_demo.png", width = 720, height = 400)
+
+# png device error: "unable to start png() device", printing instead
+#png("demo/reock_demo_M.png", width = 720, height = 400)
 tm_shape(st_minimum_bounding_circle(st_convex_hull(sfCdPa))) +
   tm_polygons(col = "darkgray") +
   tm_facets("District_N") +
@@ -61,10 +62,10 @@ tm_shape(st_minimum_bounding_circle(st_convex_hull(st_transform(sfCdPa, crsPaDep
 tm_shape(sfCdPa) +
   tm_polygons(col = "#1b9e77") +
   tm_facets("District_N")
-dev.off()
+#dev.off()
 
 # There is not a comparable difference in the convex hull
-png("demo/convex_hull_demo.png", width = 720, height = 400)
+#png("demo/convex_hull_demo.png", width = 720, height = 400)
 tm_shape(st_convex_hull(sfCdPa)) +
   tm_borders(col = "red") +
   tm_facets("District_N") +
@@ -74,4 +75,6 @@ tm_shape(st_convex_hull(st_transform(sfCdPa, crsPaDep))) +
 tm_shape(sfCdPa) +
   tm_polygons(col = "#1b9e77") +
   tm_facets("District_N")
-dev.off()
+#dev.off()
+
+#final results in "dfReockError" df
